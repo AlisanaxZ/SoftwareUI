@@ -1,0 +1,238 @@
+body{
+  font-family:'Poppins', sans-serif;
+  background-image:url("../img/background.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  color:var(--navy);
+}
+
+.page-overlay{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+.nav{
+  height:72px;
+  display:grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items:center;
+  padding:0 60px;
+}
+
+.brand{
+  justify-self:start;
+  font-weight:800;
+  font-size:22px;
+  color:var(--navy);
+  white-space:nowrap;
+}
+
+.nav-links{
+  justify-self:center;
+  display:flex;
+  align-items:center;
+  gap:44px;
+  font-size:16px;
+  font-weight:700;
+}
+
+.nav-links a{ color:var(--navy); }
+.nav-links a.active{
+  text-decoration:underline;
+  text-underline-offset:7px;
+  text-decoration-thickness:2px;
+}
+
+.btn-outline{
+  justify-self:end;
+  border:2px solid var(--navy);
+  background:var(--white);
+  color:var(--navy);
+  padding:10px 26px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.wrap{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:10px 40px 70px;
+}
+
+.card{
+  width:min(1120px,100%);
+  min-height:560px;
+  border-radius: var(--radius);
+  background:var(--white);
+  box-shadow:0 30px 80px rgba(0,0,0,.15);
+  display:grid;
+  grid-template-columns:1fr 1.55fr;
+  overflow:hidden;
+}
+
+.left{
+  padding:60px 54px;
+  background:linear-gradient(135deg, var(--lightblue), var(--white));
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:18px;
+}
+
+.mini-icon{
+  width:92px;
+  height:92px;
+  border-radius:20px;
+  display:grid;
+  place-items:center;
+  background:var(--white);
+  border:1px solid var(--gray);
+}
+
+.mini-icon img{ width:58px; }
+
+.kicker{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--navy);
+}
+
+.left h2{
+  margin:0;
+  font-size:32px;
+  font-weight:800;
+  line-height:1.15;
+  color:var(--navy);
+}
+
+.left p{
+  margin:0;
+  font-size:15px;
+  line-height:1.7;
+  max-width:320px;
+}
+
+.right{
+  padding:72px 74px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap: var(--gap);
+}
+
+.right h3{
+  margin:0;
+  font-size:24px;
+  font-weight:800;
+  text-align:center;
+  color:var(--navy);
+}
+
+.form{
+  display:flex;
+  flex-direction:column;
+  gap: var(--gap);
+  margin-top: 6px;
+}
+
+.field-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.field{
+  height: var(--inputH);
+  border-radius:16px;
+  border:1px solid var(--gray);
+  padding:0 18px;
+  font-size:15px;
+  outline:none;
+  color:var(--navy);
+  background:var(--white);
+}
+
+.field::placeholder{ color:rgba(0,25,110,.55); }
+
+.error-text{
+  font-size:13px;
+  font-weight:600;
+  color:var(--danger);
+  min-height:18px;
+}
+
+.primary-btn{
+  height: var(--inputH);
+  border-radius:16px;
+  background:var(--navy);
+  color:var(--white);
+  font-size:16px;
+  font-weight:700;
+  border:none;
+  cursor:pointer;
+}
+
+.divider{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:12px;
+  font-weight:700;
+  justify-content:center;
+  color:var(--navy);
+  margin: 2px 0;
+}
+
+.divider::before,
+.divider::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--gray);
+  max-width:240px;
+}
+
+.ms-btn{
+  height:62px;
+  border-radius:18px;
+  border:1px solid var(--gray);
+  background:var(--white);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  font-weight:700;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.ms-icon{
+  width:22px;
+  height:22px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+}
+
+.ms-icon span{ border-radius:2px; }
+.ms-icon span:nth-child(1){background:#f35325}
+.ms-icon span:nth-child(2){background:#81bc06}
+.ms-icon span:nth-child(3){background:#05a6f0}
+.ms-icon span:nth-child(4){background:#ffba08}
+
+@media (max-width:980px){
+  .nav{ padding:0 18px; grid-template-columns: auto 1fr auto; }
+  .card{ grid-template-columns:1fr; }
+  .right,.left{ padding:40px 28px; }
+  .right h3{ text-align:left; }
+  .divider{ justify-content:flex-start; }
+  .divider::before, .divider::after{ max-width:none; }
+}
