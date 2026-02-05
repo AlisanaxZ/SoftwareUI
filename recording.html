@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulbright AntiCheat Knight — Recordings</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="css/recordings.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">Fulbright AntiCheat Knight</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a class="active" href="recording.html">Recordings</a>
+      <a href="About us.html">About us</a>
+    </nav>
+    <div class="user">
+      <span class="user-name">asdksf</span>
+      <span class="avatar" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>Your Recordings</h1>
+    <div id="recordingList" class="list"></div>
+    <div id="emptyState" class="empty">
+      No recordings yet. Start an exam to create one.
+    </div>
+  </main>
+
+  <script>
+    const list = document.getElementById("recordingList");
+    const emptyState = document.getElementById("emptyState");
+
+    function render(){
+      const sessions = JSON.parse(localStorage.getItem("recordingSessions") || "[]");
+      if (!sessions.length) {
+        sessions.push(
+          { examName:"CS207 Final Exam", course:"CS207 — Data Structures", duration:"01:12:45", chunkCount:15 },
+          { examName:"Midterm 2", course:"CS201 — Intro Programming", duration:"00:58:10", chunkCount:12 }
+        );
+      }
+      emptyState.style.display = sessions.length ? "none" : "block";
+      list.innerHTML = "";
+
+      sessions.forEach((s) => {
+        const qs = new URLSearchParams({
+          examName: s.examName,
+          course: s.course,
+          duration: s.duration,
+          chunks: String(s.chunkCount)
+        }).toString();
+        const card = document.createElement("div");
+        card.className = "record-card";
+        card.innerHTML = `
+          <div class="row">
+            <div>
+              <div class="label">Exam name</div>
+              <div class="value">${s.examName}</div>
+            </div>
+            <div class="badge">Saved</div>
+          </div>
+          <div class="grid">
+            <div>
+              <div class="label">Course</div>
+              <div class="value">${s.course}</div>
+            </div>
+            <div>
+              <div class="label">Duration</div>
+              <div class="value">${s.duration}</div>
+            </div>
+            <div>
+              <div class="label">Chunks</div>
+              <div class="value">${s.chunkCount}</div>
+            </div>
+            <div class="cta">
+              <a class="primary-btn" href="recording-view.html?${qs}">View Recording</a>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>

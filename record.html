@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulbright AntiCheat Knight — Record</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="css/record.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">Fulbright AntiCheat Knight</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="recording.html">Recordings</a>
+      <a href="About us.html">About us</a>
+    </nav>
+    <div class="user">
+      <span class="user-name">asdksf</span>
+      <span class="avatar" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <header class="topbar">
+    <div class="status">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="label">Recording status:</span>
+      <span id="recordingState" class="value">Not recording</span>
+    </div>
+    <div class="timer">
+      <span class="label">Timer:</span>
+      <span id="timerValue" class="value">00:00:00</span>
+    </div>
+    <div class="network">
+      <span class="label">Network status:</span>
+      <span id="networkValue" class="value">Online</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div class="message-bar after-only">
+      “Your screen is being recorded. Please do not close this tab.”
+    </div>
+
+    <section class="panel left">
+      <h2>Exam metadata</h2>
+      <div class="meta">
+        <div class="row">
+          <div class="k">Course</div>
+          <div class="v" id="courseValue">CS207 — Data Structures</div>
+        </div>
+        <div class="row">
+          <div class="k">Duration</div>
+          <div class="v" id="durationValue">120 minutes</div>
+        </div>
+        <div class="row">
+          <div class="k">Allowed tools</div>
+          <div class="v" id="toolsValue">Local IDE, calculator</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel right">
+      <div class="actions start-only">
+        <button id="startBtn" class="primary-btn" type="button">Start Recording &amp; Exam</button>
+        <div id="warning" class="warning">
+          ⚠️ Screen recording permission is required to start the exam.
+        </div>
+      </div>
+
+      <div class="pdf-tab after-only">
+        <div class="pdf-head">
+          <a class="download-link" href="files/problem.pdf" download>
+            <span class="dl-icon" aria-hidden="true"></span>
+            Download Problem PDF
+          </a>
+        </div>
+        <div class="pdf-preview">
+          PDF preview goes here.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button id="stopBtn" class="stop-btn" type="button">Stop Recording</button>
+
+  <div id="permissionModal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="permissionTitle">
+      <h3 id="permissionTitle">Allow screen recording?</h3>
+      <p>We need your permission to record your screen before starting the exam.</p>
+      <div class="modal-actions">
+        <button id="denyPermission" class="ghost-btn" type="button">Deny</button>
+        <button id="allowPermission" class="primary-btn" type="button">Allow</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <h3 id="confirmTitle">Stop recording?</h3>
+      <p>If you stop now, your recording will be saved and the exam will end.</p>
+      <div class="modal-actions">
+        <button id="cancelStop" class="ghost-btn" type="button">Cancel</button>
+        <button id="confirmStop" class="danger-btn" type="button">Stop Recording</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const warning = document.getElementById("warning");
+    const recordingState = document.getElementById("recordingState");
+    const timerValue = document.getElementById("timerValue");
+    const networkValue = document.getElementById("networkValue");
+    const confirmModal = document.getElementById("confirmModal");
+    const cancelStop = document.getElementById("cancelStop");
+    const confirmStop = document.getElementById("confirmStop");
+    const permissionModal = document.getElementById("permissionModal");
+    const allowPermission = document.getElementById("allowPermission");
+    const denyPermission = document.getElementById("denyPermission");
+
+    let timerId = null;
+    let seconds = 0;
+    let sessionId = null;
+    let sessionStart = null;
+
+    function formatTime(s){
+      const h = String(Math.floor(s / 3600)).padStart(2, "0");
+      const m = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
+      const sec = String(s % 60).padStart(2, "0");
+      return `${h}:${m}:${sec}`;
+    }
+
+    function setRecordingState(isOn){
+      recordingState.textContent = isOn ? "Recording" : "Not recording";
+      document.body.classList.toggle("is-recording", isOn);
+      stopBtn.style.display = isOn ? "block" : "none";
+    }
+
+    function startTimer(){
+      if (timerId) return;
+      timerId = setInterval(() => {
+        seconds += 1;
+        timerValue.textContent = formatTime(seconds);
+        storeChunk();
+      }, 1000);
+    }
+
+    function stopTimer(){
+      clearInterval(timerId);
+      timerId = null;
+    }
+
+    function storeChunk(){
+      if (seconds % 5 !== 0 || !sessionId) return;
+      const chunks = JSON.parse(localStorage.getItem("recordingChunks") || "[]");
+      chunks.push({
+        sessionId,
+        time: formatTime(seconds),
+        savedAt: new Date().toISOString(),
+        status: "saved"
+      });
+      localStorage.setItem("recordingChunks", JSON.stringify(chunks));
+    }
+
+    function saveSession(){
+      if (!sessionId || !sessionStart) return;
+      const chunks = JSON.parse(localStorage.getItem("recordingChunks") || "[]");
+      const count = chunks.filter(c => c.sessionId === sessionId).length;
+      const sessions = JSON.parse(localStorage.getItem("recordingSessions") || "[]");
+      sessions.unshift({
+        id: sessionId,
+        examName: "CS207 Final Exam",
+        course: "CS207 — Data Structures",
+        duration: formatTime(seconds),
+        startAt: sessionStart,
+        endAt: new Date().toISOString(),
+        chunkCount: count
+      });
+      localStorage.setItem("recordingSessions", JSON.stringify(sessions));
+    }
+
+    startBtn.addEventListener("click", () => {
+      permissionModal.classList.add("show");
+      permissionModal.setAttribute("aria-hidden", "false");
+    });
+
+    denyPermission.addEventListener("click", () => {
+      permissionModal.classList.remove("show");
+      permissionModal.setAttribute("aria-hidden", "true");
+      warning.style.display = "block";
+    });
+
+    allowPermission.addEventListener("click", () => {
+      permissionModal.classList.remove("show");
+      permissionModal.setAttribute("aria-hidden", "true");
+      warning.style.display = "none";
+      if (!sessionId) {
+        sessionId = Date.now().toString();
+        sessionStart = new Date().toISOString();
+      }
+      setRecordingState(true);
+      startTimer();
+    });
+
+    stopBtn.addEventListener("click", () => {
+      confirmModal.classList.add("show");
+      confirmModal.setAttribute("aria-hidden", "false");
+    });
+
+    cancelStop.addEventListener("click", () => {
+      confirmModal.classList.remove("show");
+      confirmModal.setAttribute("aria-hidden", "true");
+    });
+
+    confirmStop.addEventListener("click", () => {
+      confirmModal.classList.remove("show");
+      confirmModal.setAttribute("aria-hidden", "true");
+      saveSession();
+      setRecordingState(false);
+      stopTimer();
+    });
+
+    function updateNetwork(){
+      const online = navigator.onLine;
+      networkValue.textContent = online ? "Online" : "Offline";
+      document.body.classList.toggle("offline", !online);
+    }
+
+    window.addEventListener("online", updateNetwork);
+    window.addEventListener("offline", updateNetwork);
+    updateNetwork();
+    setRecordingState(false);
+  </script>
+</body>
+</html>

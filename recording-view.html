@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulbright AntiCheat Knight — Recording Detail</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="css/recording-view.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">Fulbright AntiCheat Knight</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a class="active" href="recording.html">Recordings</a>
+      <a href="About us.html">About us</a>
+    </nav>
+    <div class="user">
+      <span class="user-name">asdksf</span>
+      <span class="avatar" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>Recording Detail</h1>
+
+    <section class="detail-card">
+      <div class="row">
+        <div>
+          <div class="label">Exam name</div>
+          <div class="value" id="examName">CS207 Final Exam</div>
+        </div>
+        <span class="badge">Submitted</span>
+      </div>
+
+      <div class="grid">
+        <div>
+          <div class="label">Course</div>
+          <div class="value" id="courseName">CS207 — Data Structures</div>
+        </div>
+        <div>
+          <div class="label">Duration</div>
+          <div class="value" id="durationValue">01:12:45</div>
+        </div>
+        <div>
+          <div class="label">Chunks</div>
+          <div class="value" id="chunkCount">15</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="player">
+      <div class="player-box">Recording preview goes here.</div>
+    </section>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const examName = params.get("examName") || "CS207 Final Exam";
+    const course = params.get("course") || "CS207 — Data Structures";
+    const duration = params.get("duration") || "01:12:45";
+    const chunks = params.get("chunks") || "15";
+
+    document.getElementById("examName").textContent = examName;
+    document.getElementById("courseName").textContent = course;
+    document.getElementById("durationValue").textContent = duration;
+    document.getElementById("chunkCount").textContent = chunks;
+  </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulbright AntiCheat Knight — Home</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <div class="brand">Fulbright AntiCheat Knight</div>
+
+      <nav class="nav-links">
+        <a class="active" href="index.html">Home</a>
+        <a href="recording.html">Recordings</a>
+        <a href="About us.html">About us</a>
+      </nav>
+
+      <div class="user">
+        <span class="user-name">asdksf</span>
+        <span class="avatar" aria-hidden="true"></span>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="welcome">Welcome Student, <span class="name">...name...</span>.</div>
+
+      <section class="frame" id="exams">
+        <div class="frame-head">
+          <div class="frame-title">Student / Exam List</div>
+          <label class="filter">
+            <span class="filter-label">Status</span>
+            <select id="statusFilter" class="filter-select" aria-label="Filter by status">
+              <option>All</option>
+              <option>Not started</option>
+              <option>In progress</option>
+              <option>Ended</option>
+              <option>Submitted</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="cards">
+          <article class="exam-card" data-status="In progress">
+            <div class="exam-row">
+              <div>
+                <div class="label">Exam name</div>
+                <div class="value">CS207 Final Exam</div>
+              </div>
+              <span class="badge in-progress">In progress</span>
+            </div>
+            <div class="exam-grid">
+              <div>
+                <div class="label">Course</div>
+                <div class="value">CS207 — Data Structures</div>
+              </div>
+              <div>
+                <div class="label">Time window</div>
+                <div class="value">Feb 10, 08:00–10:00</div>
+              </div>
+              <div class="cta">
+                <a class="primary-btn" href="record.html">Enter Exam</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="exam-card" data-status="Ended">
+            <div class="exam-row">
+              <div>
+                <div class="label">Exam name</div>
+                <div class="value">Midterm 2</div>
+              </div>
+              <span class="badge ended">Ended</span>
+            </div>
+            <div class="exam-grid">
+              <div>
+                <div class="label">Course</div>
+                <div class="value">CS201 — Intro Programming</div>
+              </div>
+              <div>
+                <div class="label">Time window</div>
+                <div class="value">Feb 12, 13:00–15:00</div>
+              </div>
+              <div class="cta">
+                <button class="primary-btn" type="button" disabled>Enter Exam</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="exam-card" data-status="Submitted">
+            <div class="exam-row">
+              <div>
+                <div class="label">Exam name</div>
+                <div class="value">Quiz 5</div>
+              </div>
+              <span class="badge submitted">Submitted</span>
+            </div>
+            <div class="exam-grid">
+              <div>
+                <div class="label">Course</div>
+                <div class="value">CS105 — Discrete Math</div>
+              </div>
+              <div>
+                <div class="label">Time window</div>
+                <div class="value">Feb 01, 09:00–09:30</div>
+              </div>
+              <div class="cta">
+                <a class="primary-btn" href="recording-view.html">See Recording</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const statusFilter = document.getElementById("statusFilter");
+    const cards = Array.from(document.querySelectorAll(".exam-card"));
+
+    function applyFilter(){
+      const value = statusFilter.value;
+      cards.forEach((card) => {
+        const status = card.getAttribute("data-status");
+        const visible = value === "All" || value === status;
+        card.style.display = visible ? "" : "none";
+      });
+    }
+
+    statusFilter.addEventListener("change", applyFilter);
+  </script>
+</body>
+</html>

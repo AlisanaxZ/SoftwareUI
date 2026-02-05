@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fulbright AntiCheat Knight — Recordings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/default.css">
+  <link rel="stylesheet" href="css/prof-recordings.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="brand">Fulbright AntiCheat Knight</div>
+    <nav class="nav-links">
+      <a href="prof-home.html">Home</a>
+      <a class="active" href="prof-recordings.html">Recordings</a>
+      <a href="About us.html">About us</a>
+    </nav>
+    <div class="user">
+      <span class="user-name">Professor</span>
+      <span class="avatar" aria-hidden="true"></span>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="frame">
+      <div class="head">
+        <div class="page-title">Recordings</div>
+        <div class="filters">
+          <label><span>Exam</span>
+            <select><option>All exams</option><option>CS207 Final</option><option>Midterm 2</option></select>
+          </label>
+          <label><span>Class</span>
+            <select><option>All classes</option><option>CS207</option><option>CS201</option></select>
+          </label>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="table-head">
+          <div>Student</div><div>Exam</div><div>Status</div><div>Duration</div><div></div>
+        </div>
+        <div class="table-row">
+          <div class="strong">Nguyen Minh</div>
+          <div>CS207 Final</div>
+          <div class="status complete">Completed</div>
+          <div>01:28:14</div>
+          <div class="actions">
+            <button class="ghost-btn view-btn" type="button">View</button>
+            <button class="primary-btn" type="button">Download</button>
+          </div>
+        </div>
+        <div class="table-row">
+          <div class="strong">Tran Anh</div>
+          <div>CS207 Final</div>
+          <div class="status interrupted">Interrupted</div>
+          <div>00:52:43</div>
+          <div class="actions">
+            <button class="ghost-btn view-btn" type="button">View</button>
+            <button class="primary-btn" type="button">Download</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="previewModal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+      <div class="modal-head">
+        <h3 id="previewTitle">Recording Preview</h3>
+        <button id="closePreview" class="ghost-btn" type="button">Close</button>
+      </div>
+      <div class="preview-box">Preview player</div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("previewModal");
+    const closePreview = document.getElementById("closePreview");
+    document.querySelectorAll(".view-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+      });
+    });
+    closePreview.addEventListener("click", () => {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+    });
+  </script>
+</body>
+</html>
